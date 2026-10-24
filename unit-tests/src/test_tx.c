@@ -178,6 +178,10 @@ static const char* negative_testcases[] = {
     // must not clear-sign as plain XRP with an attacker-chosen issuer.
     "../../tests/standalone/testcases/01-payment/"
     "28-all-zero-currency-issued-amount.raw",
+    // An MPT amount without the positive bit is negative. No transaction
+    // may carry one, and it must not be shown as a positive value.
+    "../../tests/standalone/testcases/01-payment/"
+    "32-negative-mpt-amount.raw",
     // NFTokenAcceptOffer only references an offer by hash; the price lives
     // on the NFTokenOffer ledger object, outside the signed bytes. A clear
     // sign review would therefore show the same screen for a fair trade and
