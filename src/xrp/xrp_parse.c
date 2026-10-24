@@ -279,6 +279,13 @@ err_t read_amount(parseContext_t* context, field_t* field) {
         // An MPT amount: bit 0x20 set, which no valid XRP amount sets.
         CHECK(read_fixed_size_field(context, field, MPT_AMOUNT_LEN));
 
+        // Without the positive bit it is negative, which no transaction may
+        // carry, and the review shows only the magnitude.
+        if ((first_byte & 0x40u) == 0) {
+            err.err = INVALID_STATE;
+            return err;
+        }
+
         field_t* issuance;
         CHECK(append_new_field(context, &issuance));
         issuance->data_type = STI_UINT192;
