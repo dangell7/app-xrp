@@ -41,6 +41,9 @@ static const char* testcases[] = {
     //"../../tests/standalone/testcases/01-payment/19-really-stupid-tx.raw",
     "../../tests/standalone/testcases/01-payment/20-spoofed-xrp-currency.raw",
     "../../tests/standalone/testcases/01-payment/23-xrp-nonstandard-spoof.raw",
+    "../../tests/standalone/testcases/01-payment/29-delegate.raw",
+    "../../tests/standalone/testcases/01-payment/30-credential-ids.raw",
+    "../../tests/standalone/testcases/01-payment/31-mpt-amount.raw",
     "../../tests/standalone/testcases/02-set-regular-key/01-basic.raw",
     "../../tests/standalone/testcases/02-set-regular-key/02-delete.raw",
     "../../tests/standalone/testcases/02-set-regular-key/"
@@ -183,6 +186,22 @@ static const char* negative_testcases[] = {
     "03-nftoken-accept-offer.raw",
     "../../tests/standalone/testcases/blind-sign/"
     "04-nftoken-accept-offer-broker.raw",
+    NULL,
+};
+
+// Transactions the app can parse but must not clear-sign: parse_tx must ask
+// for blind signing, not reject them outright.
+static const char* blind_sign_testcases[] = {
+    // MaximumAmount is a UINT64 field.
+    "../../tests/standalone/testcases/blind-sign/"
+    "05-mptoken-issuance-create.raw",
+    // MPTokenIssuanceID is a UINT192 field.
+    "../../tests/standalone/testcases/blind-sign/"
+    "06-mptoken-issuance-destroy.raw",
+    // CheckCreate has no flags of its own, so any bit besides
+    // tfFullyCanonicalSig cannot be shown.
+    "../../tests/standalone/testcases/blind-sign/"
+    "07-check-create-unknown-flag.raw",
     NULL,
 };
 
@@ -336,10 +355,28 @@ void test_invalid_transactions(void** state) {
     }
 }
 
+void test_blind_sign_transactions(void** state) {
+    (void)state;
+
+    for (const char** testcase = blind_sign_testcases; *testcase != NULL;
+         testcase++) {
+        size_t size;
+        uint8_t* data = load_transaction_data(*testcase, &size);
+
+        memset(&parse_context, 0, sizeof(parse_context));
+        parse_context.data = data;
+        parse_context.length = size;
+        assert_int_equal(parse_tx(&parse_context), BLIND_SIGN_REQUIRED);
+
+        free(data);
+    }
+}
+
 int main() {
     const struct CMUnitTest tests[] = {
         cmocka_unit_test(test_transactions),
         cmocka_unit_test(test_invalid_transactions),
+        cmocka_unit_test(test_blind_sign_transactions),
     };
     return cmocka_run_group_tests(tests, NULL, NULL);
 }
