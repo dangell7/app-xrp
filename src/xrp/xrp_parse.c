@@ -286,6 +286,12 @@ err_t read_amount(parseContext_t* context, field_t* field) {
             return err;
         }
 
+        // No MPT amount exceeds 0x7FFFFFFFFFFFFFFF.
+        if ((field->data.ptr[1] & 0x80u) != 0) {
+            err.err = INVALID_STATE;
+            return err;
+        }
+
         field_t* issuance;
         CHECK(append_new_field(context, &issuance));
         issuance->data_type = STI_UINT192;
