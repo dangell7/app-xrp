@@ -297,6 +297,8 @@ def test_sign_valid_tx(
         pytest.skip(f"skip all-zero-currency tx from '{Path(raw_tx_path).stem}'")
     if raw_tx_path.endswith("32-negative-mpt-amount.raw"):
         pytest.skip(f"skip negative-mpt tx from '{Path(raw_tx_path).stem}'")
+    if raw_tx_path.endswith("33-mpt-amount-above-max.raw"):
+        pytest.skip(f"skip above-max-mpt tx from '{Path(raw_tx_path).stem}'")
 
     xrp = XRPClient(backend, navigator)
 
@@ -375,6 +377,22 @@ def test_sign_negative_mpt_amount(backend: BackendInterface, navigator: Navigato
     xrp = XRPClient(backend, navigator)
 
     tx_path = Path(__file__).parent / "testcases/01-payment/32-negative-mpt-amount.raw"
+    with open(tx_path, "rb") as fp:
+        tx = fp.read()
+
+    backend.raise_policy = RaisePolicy.RAISE_ALL_BUT_0x9000
+    with pytest.raises(ExceptionRAPDU) as err:
+        with xrp.sign(DEFAULT_BIP32_PATH + tx):
+            pass  # error is synchronous — returned before yield
+    assert err.value.status != Errors.SW_SUCCESS
+
+
+def test_sign_mpt_amount_above_max(backend: BackendInterface, navigator: Navigator):
+    """No MPT amount exceeds 0x7FFFFFFFFFFFFFFF; a larger value is outside the
+    protocol and must not be shown."""
+    xrp = XRPClient(backend, navigator)
+
+    tx_path = Path(__file__).parent / "testcases/01-payment/33-mpt-amount-above-max.raw"
     with open(tx_path, "rb") as fp:
         tx = fp.read()
 

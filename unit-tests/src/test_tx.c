@@ -182,6 +182,10 @@ static const char* negative_testcases[] = {
     // may carry one, and it must not be shown as a positive value.
     "../../tests/standalone/testcases/01-payment/"
     "32-negative-mpt-amount.raw",
+    // No MPT amount exceeds 0x7FFFFFFFFFFFFFFF; a larger value is outside the
+    // protocol and must not reach the review.
+    "../../tests/standalone/testcases/01-payment/"
+    "33-mpt-amount-above-max.raw",
     // NFTokenAcceptOffer only references an offer by hash; the price lives
     // on the NFTokenOffer ledger object, outside the signed bytes. A clear
     // sign review would therefore show the same screen for a fair trade and
