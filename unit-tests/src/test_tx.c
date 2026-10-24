@@ -56,6 +56,7 @@ static const char* testcases[] = {
     "05-both-condition-destination.raw",
     "../../tests/standalone/testcases/03-escrow-create/"
     "06-all-common-fields.raw",
+    "../../tests/standalone/testcases/03-escrow-create/07-mpt-amount.raw",
     "../../tests/standalone/testcases/04-escrow-finish/01-time-based.raw",
     "../../tests/standalone/testcases/04-escrow-finish/02-condition-based.raw",
     "../../tests/standalone/testcases/05-escrow-cancel/01-basic.raw",
@@ -124,6 +125,7 @@ static const char* testcases[] = {
     "../../tests/standalone/testcases/22-nftoken-cancel-offer/"
     "02-large-vector.raw",
     "../../tests/standalone/testcases/24-clawback/01-basic.raw",
+    "../../tests/standalone/testcases/24-clawback/02-mpt-amount.raw",
     "../../tests/standalone/testcases/25-amm-create/01-basic.raw",
     "../../tests/standalone/testcases/26-amm-deposit/01-one-sided.raw",
     "../../tests/standalone/testcases/26-amm-deposit/02-two-sided.raw",
@@ -136,6 +138,24 @@ static const char* testcases[] = {
     "../../tests/standalone/testcases/28-amm-bid/01-basic.raw",
     "../../tests/standalone/testcases/28-amm-bid/02-min-max.raw",
     "../../tests/standalone/testcases/29-amm-vote/01-basic.raw",
+    "../../tests/standalone/testcases/30-mptoken-issuance-create/01-basic.raw",
+    "../../tests/standalone/testcases/30-mptoken-issuance-create/"
+    "02-all-fields-flags.raw",
+    "../../tests/standalone/testcases/30-mptoken-issuance-create/"
+    "03-transfer-fee.raw",
+    "../../tests/standalone/testcases/30-mptoken-issuance-create/"
+    "04-metadata-binary.raw",
+    "../../tests/standalone/testcases/30-mptoken-issuance-create/"
+    "05-maximum-amount-zero.raw",
+    "../../tests/standalone/testcases/30-mptoken-issuance-create/"
+    "06-maximum-amount-uint64-max.raw",
+    "../../tests/standalone/testcases/31-mptoken-issuance-destroy/01-basic.raw",
+    "../../tests/standalone/testcases/32-mptoken-issuance-set/01-lock.raw",
+    "../../tests/standalone/testcases/32-mptoken-issuance-set/"
+    "02-unlock-holder.raw",
+    "../../tests/standalone/testcases/33-mptoken-authorize/01-basic.raw",
+    "../../tests/standalone/testcases/33-mptoken-authorize/"
+    "02-unauthorize-holder.raw",
     NULL,
 };
 
@@ -200,16 +220,17 @@ static const char* negative_testcases[] = {
 // Transactions the app can parse but must not clear-sign: parse_tx must ask
 // for blind signing, not reject them outright.
 static const char* blind_sign_testcases[] = {
-    // MaximumAmount is a UINT64 field.
-    "../../tests/standalone/testcases/blind-sign/"
-    "05-mptoken-issuance-create.raw",
-    // MPTokenIssuanceID is a UINT192 field.
-    "../../tests/standalone/testcases/blind-sign/"
-    "06-mptoken-issuance-destroy.raw",
     // CheckCreate has no flags of its own, so any bit besides
     // tfFullyCanonicalSig cannot be shown.
     "../../tests/standalone/testcases/blind-sign/"
     "07-check-create-unknown-flag.raw",
+    // ImmutableFlags belongs to DynamicMPT, which Mainnet has not enabled.
+    "../../tests/standalone/testcases/blind-sign/"
+    "08-mptoken-issuance-set-immutable-flags.raw",
+    // tfMPTCanHoldConfidentialBalance belongs to ConfidentialTransfer, which
+    // Mainnet has not enabled.
+    "../../tests/standalone/testcases/blind-sign/"
+    "09-mptoken-issuance-create-confidential-flag.raw",
     NULL,
 };
 
