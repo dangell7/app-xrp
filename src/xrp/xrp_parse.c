@@ -125,6 +125,10 @@ static bool is_supported_transaction_type(uint16_t t) {
         case TRANSACTION_AMM_VOTE:
         case TRANSACTION_AMM_BID:
         case TRANSACTION_AMM_DELETE:
+        case TRANSACTION_MPTOKEN_ISSUANCE_CREATE:
+        case TRANSACTION_MPTOKEN_ISSUANCE_DESTROY:
+        case TRANSACTION_MPTOKEN_ISSUANCE_SET:
+        case TRANSACTION_MPTOKEN_AUTHORIZE:
             return true;
         default:
             return false;

@@ -35,6 +35,10 @@ The XRP wallet app comes with the following features:
   - EscrowCancel
   - EscrowCreate
   - EscrowFinish
+  - MPTokenAuthorize
+  - MPTokenIssuanceCreate
+  - MPTokenIssuanceDestroy
+  - MPTokenIssuanceSet
   - NFTokenBurn
   - NFTokenCancelOffer
   - NFTokenCreateOffer
