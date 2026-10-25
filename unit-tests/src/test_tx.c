@@ -231,6 +231,15 @@ static const char* blind_sign_testcases[] = {
     // Mainnet has not enabled.
     "../../tests/standalone/testcases/blind-sign/"
     "09-mptoken-issuance-create-confidential-flag.raw",
+    // tfMPTSetCanLock has no label on MPTokenIssuanceSet.
+    "../../tests/standalone/testcases/blind-sign/"
+    "10-mptoken-issuance-set-can-lock-flag.raw",
+    // MPTokenAuthorize has only tfMPTUnauthorize; any other bit has no label.
+    "../../tests/standalone/testcases/blind-sign/"
+    "11-mptoken-authorize-unknown-flag.raw",
+    // DomainID has no name in the app.
+    "../../tests/standalone/testcases/blind-sign/"
+    "12-mptoken-issuance-create-domain-id.raw",
     NULL,
 };
 
