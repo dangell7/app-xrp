@@ -434,8 +434,8 @@ static void format_mptoken_issuance_set_flags(uint32_t value,
 // MPTokenIssuanceSet flags
 #define TF_MPT_LOCK 0x00000001u
 #define TF_MPT_UNLOCK 0x00000002u
-// The tfMPTSetCan* bits (0x00000004u to 0x00000100u) are left out: they
-// belong to the DynamicMPT amendment, so a transaction setting one blind signs.
+// The tfMPTSetCan* bits (0x00000004u to 0x00000100u) are left out: the app has
+// no label for them, so a transaction setting one blind signs.
 // Keep in sync with the checks below (see ACCOUNT_SET_KNOWN_FLAGS).
 #define MPTOKEN_ISSUANCE_SET_KNOWN_FLAGS (TF_MPT_LOCK | TF_MPT_UNLOCK)
 
